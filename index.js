@@ -19,7 +19,7 @@ const mainPageSpotsData =[
 ]
 
 const allVertex = [1,2,3,4,5];
-const distanceBetweenAnyTwoVertex = [[0,2,3,5,4],[2,0,1,1,2],[3,1,0,2,4],[5,1,2,0,5],[4,2,4,5,0]];
+const distanceBetweenAnyTwoVertex = [[0,7,7,5,4],[2,0,3,1,2],[3,2,0,2,4],[5,1,2,0,5],[4,1,1,1,0]];
 
 console.log(djkstra(allVertex,distanceBetweenAnyTwoVertex));
 
