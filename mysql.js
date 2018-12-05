@@ -54,6 +54,22 @@ app.get('/mainPageSpotsData.json', (req, res) => {
         res.send(results.map((item) => item.startspotname));
     });
 })
+app.get('/addNewRouteForm.json', (req, res) => {
+    console.log('addNewRouteForm request is comming ' + new Date());
+    connection.query("SELECT distinct startspotname from itineraries WHERE startspotname LIKE '%" + req.query.search + "%'", function (error, results, fields) {
+        if (error) throw error;
+        console.log(results);
+        res.send(results.map((item) => item.startspotname));
+    });
+})
+app.post('/login.json', (req, res) => {
+    console.log(req.body);
+    connection.query("SELECT * from users WHERE name='" + req.body.userName +"' and pass='" + req.body.password +"'", function (error, results, fields) {
+        if (error) throw error;
+        console.log(results);
+        res.send(results);
+    });
+});
 app.post('/mainPageSpotsData.json', (req, res) => {
     let queryArr = req.body.value,
         queryStr = '';
