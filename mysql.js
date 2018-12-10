@@ -57,11 +57,41 @@ app.get('/mainPageSpotsData.json', (req, res) => {
 app.post('/addNewRouteForm.json', (req, res) => {
     console.log('addNewRouteForm request is comming ' + new Date());
     console.log(req.body);
-    connection.query("SELECT distinct startspotname from itineraries WHERE startspotname LIKE '%" + req.query.search + "%'", function (error, results, fields) {
-        if (error) throw error;
-        console.log(results);
+
+    const reqBody = req.body;
+    let levels = "",
+    i=0;
+    if (reqBody.startSpotId === "") {
+        while(i < 5){
+            levels += (reqBody.startSelect[i] ? "'"+ reqBody.startSelect[i] + "'" : null) + "," ;
+            i++;
+        }
+        levels += "'"+reqBody.startSpot+"'";
+        console.log("("+ reqBody.country +"', "+ levels +")")
+        connection.query("INSERT INTO spots (country,level1,level2,level3,level4,level5,fullname) VALUES ('"+ reqBody.country +"', "+ levels +")", function (error, results, fields) {
+            if (error) throw error;
+            console.log("insert values :" + results);
+            // res.send('yes');
+        });
+    }
+    if (reqBody.endSpotId === "") {
+        while(i < 5){
+            levels += (reqBody.endSelect[i] ? "'"+ reqBody.endSelect[i] + "'" : null) + "," ;
+            i++;
+        }
+        levels += "'"+reqBody.endSpot+"'";
+        console.log("("+ reqBody.country +"', "+ levels +")")
+        connection.query("INSERT INTO spots (country,level1,level2,level3,level4,level5,fullname) VALUES ('"+ reqBody.country +"', "+ levels +")", function (error, results, fields) {
+            if (error) throw error;
+            console.log("insert values :" + results);
+            // res.send('yes');
+        });
+    }
+    // connection.query("SELECT distinct startspotname from itineraries WHERE startspotname LIKE '%" + req.query.search + "%'", function (error, results, fields) {
+    //     if (error) throw error;
+    //     console.log(results);
         res.send('yes');
-    });
+    // });
 })
 app.post('/login.json', (req, res) => {
     console.log(req.body);
