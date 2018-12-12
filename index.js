@@ -13,10 +13,10 @@ const mainPageSlideData =[
 ]
 
 const mainPageSpotsData =[
-    'chongqing',
-    'sichuan',
-    'shanxi',
-    'zhejiang'
+    {id:1,level1:'重庆',level2:'大足',fullname:'五星华府'},
+    {id:20,level1:'重庆',level2:'永川',fullname:'双石小学'},
+    {id:3,level1:'陕西',level2:'西安',fullname:'钟楼'},
+    {id:4,level1:'陕西',level2:'咸阳',fullname:'咸阳机场'},
 ]
 
 // const allVertex = [1,2,3,4,5];
@@ -49,7 +49,7 @@ app.post('/mainPageSpotsData.json', (req, res) => {
     console.log('mainPageSpotsData post request is comming '+new Date());
     console.log(req.body);
     
-    res.send(mainPageSpotsData.map((item)=>item+Math.floor(10*Math.random())));
+    res.send(mainPageSpotsData);
 })
 
 app.listen(port, () => console.log(`Example app listening on port ${port}!`))
