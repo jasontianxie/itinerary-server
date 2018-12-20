@@ -3,6 +3,7 @@ const mysql = require('mysql');
 const app = express();
 const port = 8000;
 const bodyParser = require('body-parser');
+const router = require("./routers/index");
 
 const connection = mysql.createConnection({
     host: 'localhost',
@@ -109,14 +110,7 @@ app.post('/addNewRouteForm.json', (req, res) => {
     });
         res.send('yes');
 })
-app.post('/login.json', (req, res) => {
-    console.log(req.body);
-    connection.query("SELECT * from users WHERE name='" + req.body.userName +"' and pass='" + req.body.password +"'", function (error, results, fields) {
-        if (error) throw error;
-        console.log(results);
-        res.send(results);
-    });
-});
+app.use('/', router);
 app.post('/mainPageSpotsData.json', (req, res) => {
     let queryArr = req.body.value,
         queryStr = '';
