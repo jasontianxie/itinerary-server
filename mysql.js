@@ -59,39 +59,55 @@ app.post('/addNewRouteForm.json', (req, res) => {
     console.log(req.body);
 
     const reqBody = req.body;
-    let levels = "",
+    let levelStart = "";
+    let levelEnd = "";
+    let defStart;
+    let defEnd;
+    let promises = [];
     i=0;
-    if (reqBody.startSpotId === "") {
+    j=0;
+    if (reqBody.startSpotId === "") {//更新数据点
         while(i < 5){
-            levels += (reqBody.startSelect[i] ? "'"+ reqBody.startSelect[i] + "'" : null) + "," ;
+            levelStart += (reqBody.startSelect[i] ? "'"+ reqBody.startSelect[i] + "'" : null) + "," ;
             i++;
         }
-        levels += "'"+reqBody.startSpot+"'";
-        console.log("("+ reqBody.country +"', "+ levels +")")
-        connection.query("INSERT INTO spots (country,level1,level2,level3,level4,level5,fullname) VALUES ('"+ reqBody.country +"', "+ levels +")", function (error, results, fields) {
-            if (error) throw error;
-            console.log("insert values :" + results);
-            // res.send('yes');
+        levelStart += "'"+reqBody.startSpot+"'";
+        console.log("("+ reqBody.country +"', "+ levelStart +")");
+        defStart = new Promise(function(resolve,reject){
+            connection.query("INSERT INTO spots (country,level1,level2,level3,level4,level5,fullname) VALUES ('"+ reqBody.country +"', "+ levelStart +")", function (error, results, fields) {
+                if (error) throw error;
+                console.log("insert values :");
+                console.log(results);
+                console.log(fields);
+                resolve(results);
+            });
         });
+        promises.push(defStart);
     }
-    if (reqBody.endSpotId === "") {
-        while(i < 5){
-            levels += (reqBody.endSelect[i] ? "'"+ reqBody.endSelect[i] + "'" : null) + "," ;
-            i++;
+    if (reqBody.endSpotId === "") {//更新数据点
+        while(j < 5){
+            levelEnd += (reqBody.endSelect[j] ? "'"+ reqBody.endSelect[j] + "'" : null) + "," ;
+            j++;
         }
-        levels += "'"+reqBody.endSpot+"'";
-        console.log("("+ reqBody.country +"', "+ levels +")")
-        connection.query("INSERT INTO spots (country,level1,level2,level3,level4,level5,fullname) VALUES ('"+ reqBody.country +"', "+ levels +")", function (error, results, fields) {
-            if (error) throw error;
-            console.log("insert values :" + results);
-            // res.send('yes');
+        levelEnd += "'"+reqBody.endSpot+"'";
+        console.log("("+ reqBody.country +"', "+ levelEnd +")")
+        defEnd = new Promise(function(resolve,reject){
+            connection.query("INSERT INTO spots (country,level1,level2,level3,level4,level5,fullname) VALUES ('"+ reqBody.country +"', "+ levelEnd +")", function (error, results, fields) {
+                if (error) throw error;
+                console.log("insert values :" + results);
+                resolve(results);
+            });
         });
+        promises.push(defEnd);
     }
-    // connection.query("SELECT distinct startspotname from itineraries WHERE startspotname LIKE '%" + req.query.search + "%'", function (error, results, fields) {
-    //     if (error) throw error;
-    //     console.log(results);
+    Promise.all(promises).then(results => {
+        if(results.length > 0){
+
+        } else {
+            
+        }
+    });
         res.send('yes');
-    // });
 })
 app.post('/login.json', (req, res) => {
     console.log(req.body);
