@@ -35,21 +35,25 @@ app.use(function(req, res, next) {
        next();
  });
 
-app.get('/mainPageSlideData.json', (req, res) => {
+app.get('/mainPageSlideData', (req, res) => {
     console.log('mainPageSlideData request is comming '+new Date());
     res.send(mainPageSlideData);
-})
+});
+
+app.post('/users', (req, res) => {
+    res.send({name:req.body.userName, pass:req.body.password, id:Math.floor(10*Math.random())});
+});
 
 app.get('/mainPageSpotsData.json', (req, res) => {
     console.log('mainPageSpotsData get request is comming '+new Date());
     res.send(mainPageSpotsData.map((item)=>item+Math.floor(10*Math.random())));
-})
+});
 
 app.post('/mainPageSpotsData.json', (req, res) => {
     console.log('mainPageSpotsData post request is comming '+new Date());
     console.log(req.body);
     
     res.send(mainPageSpotsData);
-})
+});
 
-app.listen(port, () => console.log(`Example app listening on port ${port}!`))
+app.listen(port, () => console.log(`Example app listening on port ${port}!`));
