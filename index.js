@@ -41,7 +41,7 @@ app.get('/mainPageSlideData', (req, res) => {
 });
 
 app.post('/users', (req, res) => {
-    res.send({name:req.body.userName, pass:req.body.password, id:Math.floor(10*Math.random())});
+    res.send([{name:req.body.userName, pass:req.body.password, id:Math.floor(10*Math.random())}]);
 });
 
 app.get('/mainPageSpotsData.json', (req, res) => {
