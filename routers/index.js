@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const queryUsers = require("../modles/users");
 const createSpot = require("../modles/spots");
+const {createRoute, queryRoute} = require("../modles/routes");
 const queryMainPageSlideData = require("../modles/mainPageSlideData");
 
 router.post('/users',(req,res) => {
@@ -17,38 +18,59 @@ router.get('/mainPageSlideData',(req,res) => {
         res.send(queryMainPageSlideData());
 });
 
-app.post('/newRouteForm', (req, res) => {
+router.post('/newRouteForm', (req, res) => {
     const reqBody = req.body;
+    let promises = [];
     if (reqBody.startSpotId === "") {//更新数据点
-        createSpot({
+        promises.push(createSpot({
             country: reqBody.country,
             level1: reqBody.startSelect[0] || null,
-            level1: reqBody.startSelect[1] || null,
-            level1: reqBody.startSelect[2] || null,
-            level1: reqBody.startSelect[3] || null,
-            level1: reqBody.startSelect[4] || null,
-            fullname: reqBody.fullname,
-        }).then((results) => {
-            console.log(results);
-        },(error) => {
-            console.log(error)
-        })
+            level2: reqBody.startSelect[1] || null,
+            level3: reqBody.startSelect[2] || null,
+            level4: reqBody.startSelect[3] || null,
+            level5: reqBody.startSelect[4] || null,
+            fullname: reqBody.startSpot,
+        }));
     }
     if (reqBody.endSpotId === "") {//更新数据点
-        createSpot({
+        promises.push(createSpot({
             country: reqBody.country,
             level1: reqBody.endSelect[0] || null,
-            level1: reqBody.endSelect[1] || null,
-            level1: reqBody.endSelect[2] || null,
-            level1: reqBody.endSelect[3] || null,
-            level1: reqBody.endSelect[4] || null,
-            fullname: reqBody.fullname,
-        }).then((results) => {
-            console.log(results);
-        },(error) => {
-            console.log(error)
-        })
+            level2: reqBody.endSelect[1] || null,
+            level3: reqBody.endSelect[2] || null,
+            level4: reqBody.endSelect[3] || null,
+            level5: reqBody.endSelect[4] || null,
+            fullname: reqBody.endSpot,
+        }));
     }
+    Promise.all(promises).then((results) =>{
+        if(results.length === 0){// 如果两个点都存在
+            return queryRoute({startSpotID: reqBody.startSpotId, endSpotID: reqBody.endSpotId}).then(
+                (results) =>{
+                    if(results.length){// 如果两个点都存在，但是这两个点之间已经有了route
+                        return {dataValues:"route already exist，won't create a new route"}
+                    } else{// 如果两个点都存在，但是这两个点之间还没有route
+                        return createRoute({startSpotID: reqBody.startSpotId, endSpotID: reqBody.endSpotId});
+                    }
+                },(errors) =>{
+                    console.log(errors);
+                }
+            )
+        } else if (results.length === 1 && reqBody.startSpotId !== "") {// 如果只有起始点存在
+            return createRoute({startSpotID: reqBody.startSpotId, endSpotID: results[0].id});
+        } else if (results.length === 1 && reqBody.endSpotId !== "") {// 如果只有终点存在
+            return createRoute({startSpotID: results[0].id, endSpotID: reqBody.endSpotId});
+        } else {// 如果两个点都不存在
+            return createRoute({startSpotID: reqBody.startSpotId, endSpotID: reqBody.endSpotId});
+        }
+    },(errors)=>{
+        console.log(errors);
+    }).then((results) =>{
+        console.log("this is the results");
+        console.log(results.dataValues);
+    },(errors) =>{
+        console.log(errors);
+    })
     res.send('success');
 });
 
