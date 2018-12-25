@@ -45,61 +45,6 @@ app.get('/mainPageSpotsData.json', (req, res) => {
         res.send(results.map((item) => item.startspotname));
     });
 })
-// app.post('/addNewRouteForm.json', (req, res) => {
-//     console.log('addNewRouteForm request is comming ' + new Date());
-//     console.log(req.body);
-
-//     const reqBody = req.body;
-//     let levelStart = "";
-//     let levelEnd = "";
-//     let defStart;
-//     let defEnd;
-//     let promises = [];
-//     i=0;
-//     j=0;
-//     if (reqBody.startSpotId === "") {//更新数据点
-//         while(i < 5){
-//             levelStart += (reqBody.startSelect[i] ? "'"+ reqBody.startSelect[i] + "'" : null) + "," ;
-//             i++;
-//         }
-//         levelStart += "'"+reqBody.startSpot+"'";
-//         console.log("("+ reqBody.country +"', "+ levelStart +")");
-//         defStart = new Promise(function(resolve,reject){
-//             connection.query("INSERT INTO spots (country,level1,level2,level3,level4,level5,fullname) VALUES ('"+ reqBody.country +"', "+ levelStart +")", function (error, results, fields) {
-//                 if (error) throw error;
-//                 console.log("insert values :");
-//                 console.log(results);
-//                 console.log(fields);
-//                 resolve(results);
-//             });
-//         });
-//         promises.push(defStart);
-//     }
-//     if (reqBody.endSpotId === "") {//更新数据点
-//         while(j < 5){
-//             levelEnd += (reqBody.endSelect[j] ? "'"+ reqBody.endSelect[j] + "'" : null) + "," ;
-//             j++;
-//         }
-//         levelEnd += "'"+reqBody.endSpot+"'";
-//         console.log("("+ reqBody.country +"', "+ levelEnd +")")
-//         defEnd = new Promise(function(resolve,reject){
-//             connection.query("INSERT INTO spots (country,level1,level2,level3,level4,level5,fullname) VALUES ('"+ reqBody.country +"', "+ levelEnd +")", function (error, results, fields) {
-//                 if (error) throw error;
-//                 console.log("insert values :" + results);
-//                 resolve(results);
-//             });
-//         });
-//         promises.push(defEnd);
-//     }
-//     Promise.all(promises).then(results => {
-//         if(results.length > 0){
-
-//         } else {
-            
-//         }
-//     });
-//         res.send('yes');
-// })
 app.use('/', router);
 app.post('/mainPageSpotsData.json', (req, res) => {
     let queryArr = req.body.value,
