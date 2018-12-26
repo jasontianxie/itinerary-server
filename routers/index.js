@@ -3,6 +3,7 @@ const router = express.Router();
 const queryUsers = require("../modles/users");
 const createSpot = require("../modles/spots");
 const {createRoute, queryRoute} = require("../modles/routes");
+const createNewRecord = require("../modles/routeDetail");
 const queryMainPageSlideData = require("../modles/mainPageSlideData");
 
 router.post('/users',(req,res) => {
@@ -21,6 +22,8 @@ router.get('/mainPageSlideData',(req,res) => {
 router.post('/newRouteForm', (req, res) => {
     const reqBody = req.body;
     let promises = [];
+    console.log("reqBody");
+    console.log(reqBody);
     if (reqBody.startSpotId === "") {//更新数据点
         promises.push(createSpot({
             country: reqBody.country,
@@ -48,7 +51,7 @@ router.post('/newRouteForm', (req, res) => {
             return queryRoute({startSpotID: reqBody.startSpotId, endSpotID: reqBody.endSpotId}).then(
                 (results) =>{
                     if(results.length){// 如果两个点都存在，但是这两个点之间已经有了route
-                        return {dataValues:"route already exist，won't create a new route"}
+                        return {dataValues:results[0].routeID}
                     } else{// 如果两个点都存在，但是这两个点之间还没有route
                         return createRoute({startSpotID: reqBody.startSpotId, endSpotID: reqBody.endSpotId});
                     }
@@ -66,10 +69,27 @@ router.post('/newRouteForm', (req, res) => {
     },(errors)=>{
         console.log(errors);
     }).then((results) =>{
-        console.log("this is the results");
-        console.log(results.dataValues);
+        // console.log("this is the results");
+        // console.log(results.dataValues);
+        return createNewRecord(results.dataValues.routeID, {
+            routeID: results.dataValues.routeID,
+            userId: parseInt(reqBody.userid),
+            itineraryId: parseInt(reqBody.itineraryId),
+            startDate: reqBody.startTime.split(" ")[0],
+            startTime: reqBody.startTime.split(" ")[1],
+            endDate: reqBody.endTime.split(" ")[0],
+            endTime: reqBody.endTime.split(" ")[1],
+            waitTime: reqBody.waitTimeHours * 60 + reqBody.waitTimeMimutes,
+            vehicle: reqBody.vehicle,
+            vehicleNote: reqBody.comments,
+            cost: reqBody.cost,
+        })
     },(errors) =>{
         console.log(errors);
+    }).then((res) =>{
+        console.log(res);
+    },(error) =>{
+        console.log(error)
     })
     res.send('success');
 });
