@@ -3,7 +3,7 @@ const router = express.Router();
 const queryUsers = require("../modles/users");
 const createSpot = require("../modles/spots");
 const {createRoute, queryRoute} = require("../modles/routes");
-const createNewRecord = require("../modles/routeDetail");
+const {createNewRecord, createNewRouteTable} = require("../modles/routeDetail");
 const queryMainPageSlideData = require("../modles/mainPageSlideData");
 
 router.post('/users',(req,res) => {
@@ -51,7 +51,7 @@ router.post('/newRouteForm', (req, res) => {
             return queryRoute({startSpotID: reqBody.startSpotId, endSpotID: reqBody.endSpotId}).then(
                 (results) =>{
                     if(results.length){// 如果两个点都存在，但是这两个点之间已经有了route
-                        return {dataValues:results[0].routeID}
+                        return {dataValues:{routeID:results[0].routeID},routeAlreadyExist:true}
                     } else{// 如果两个点都存在，但是这两个点之间还没有route
                         return createRoute({startSpotID: reqBody.startSpotId, endSpotID: reqBody.endSpotId});
                     }
@@ -69,20 +69,32 @@ router.post('/newRouteForm', (req, res) => {
     },(errors)=>{
         console.log(errors);
     }).then((results) =>{
-        // console.log("this is the results");
-        // console.log(results.dataValues);
-        return createNewRecord(results.dataValues.routeID, {
+        return results.routeAlreadyExist ? createNewRecord(results.dataValues.routeID, {//如果表已经存在，那么就添加一条记录
             routeID: results.dataValues.routeID,
             userId: parseInt(reqBody.userid),
-            itineraryId: parseInt(reqBody.itineraryId),
+            itineraryId: parseInt(reqBody.itineraryid),
             startDate: reqBody.startTime.split(" ")[0],
             startTime: reqBody.startTime.split(" ")[1],
             endDate: reqBody.endTime.split(" ")[0],
             endTime: reqBody.endTime.split(" ")[1],
-            waitTime: reqBody.waitTimeHours * 60 + reqBody.waitTimeMimutes,
+            waitTime: parseInt(reqBody.waitTimeHours * 60 + reqBody.waitTimeMinutes),
             vehicle: reqBody.vehicle,
             vehicleNote: reqBody.comments,
             cost: reqBody.cost,
+        }) : createNewRouteTable(results.dataValues.routeID).then(()=>{//如果表不存在，就先创建表，然后再增加一条记录
+            return createNewRecord(results.dataValues.routeID, {
+                routeID: results.dataValues.routeID,
+                userId: parseInt(reqBody.userid),
+                itineraryId: parseInt(reqBody.itineraryid),
+                startDate: reqBody.startTime.split(" ")[0],
+                startTime: reqBody.startTime.split(" ")[1],
+                endDate: reqBody.endTime.split(" ")[0],
+                endTime: reqBody.endTime.split(" ")[1],
+                waitTime: parseInt(reqBody.waitTimeHours * 60 + reqBody.waitTimeMinutes),
+                vehicle: reqBody.vehicle,
+                vehicleNote: reqBody.comments,
+                cost: reqBody.cost,
+            });
         })
     },(errors) =>{
         console.log(errors);

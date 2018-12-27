@@ -1,5 +1,21 @@
 const instanse = require("./index");
 
+function createNewRouteTable(routeID) {
+    return instanse.sequelize.getQueryInterface().createTable("route" + routeID,{
+        id: { type: instanse.Sequelize.INTEGER, primaryKey: true, autoIncrement: true },
+        routeID: instanse.Sequelize.INTEGER,
+        userId: instanse.Sequelize.INTEGER,
+        itineraryId : instanse.Sequelize.INTEGER,
+        startDate: instanse.Sequelize.CHAR,
+        startTime: instanse.Sequelize.CHAR,
+        endDate: instanse.Sequelize.CHAR,
+        endTime: instanse.Sequelize.CHAR,
+        waitTime: instanse.Sequelize.INTEGER,
+        vehicle : instanse.Sequelize.CHAR,
+        vehicleNote : instanse.Sequelize.CHAR,
+        cost: instanse.Sequelize.INTEGER,
+    })
+}
 function createNewRecord(routeID, values){
     const RouteDetail = instanse.sequelize.define("route" + routeID, {
         id: { type: instanse.Sequelize.INTEGER, primaryKey: true, autoIncrement: true },
@@ -15,7 +31,8 @@ function createNewRecord(routeID, values){
         vehicleNote : instanse.Sequelize.CHAR,
         cost: instanse.Sequelize.INTEGER,
     },{
-        timestamps: false
+        timestamps: false,
+        freezeTableName: true,
     });
 
     return RouteDetail.create({
@@ -33,4 +50,4 @@ function createNewRecord(routeID, values){
     })
 }
 
-module.exports = createNewRecord;
+module.exports = {createNewRecord, createNewRouteTable};
