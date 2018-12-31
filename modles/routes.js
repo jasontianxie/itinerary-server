@@ -17,10 +17,7 @@ function createRoute(value) {
 
 function queryRoute(value) {
     return Routes.findAll({
-        where: {
-            startSpotID: value.startSpotID,
-            endSpotID: value.endSpotID,
-        }
+        where: value
     })
 }
 
