@@ -25,4 +25,8 @@ function createSpot(reqValue) {
     });
 }
 
-module.exports = createSpot;
+function findSpots(reqValue) {
+    return Spots.findAll({where:reqValue});
+}
+
+module.exports = {createSpot, findSpots};

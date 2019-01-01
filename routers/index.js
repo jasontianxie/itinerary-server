@@ -1,10 +1,11 @@
 const express = require('express');
 const router = express.Router();
 const queryUsers = require("../modles/users");
-const createSpot = require("../modles/spots");
+const {createSpot, findSpots} = require("../modles/spots");
 const {createRoute, queryRoute} = require("../modles/routes");
 const {createNewRecord, createNewRouteTable} = require("../modles/routeDetail");
 const queryMainPageSlideData = require("../modles/mainPageSlideData");
+const Op = require('sequelize').Op;
 
 router.post('/users',(req,res) => {
     queryUsers(req.body.userName, req.body.password).then((results) =>{
@@ -105,5 +106,24 @@ router.post('/newRouteForm', (req, res) => {
     })
     res.send('success');
 });
+
+router.post('/spots', (req, res) => {
+    let queryArr = req.body.value,
+        queryObj = {};
+
+    for (let i = 0; i < queryArr.length; i++) {
+        if (i == queryArr.length - 1) {
+            queryObj.fullname = {[Op.like]:"%" + queryArr[i] +"%"};
+        } else {
+            queryObj["level" + (i+1)] = queryArr[i];
+        }
+
+    }
+    findSpots(queryObj).then((results) => {
+        res.send(results);
+    }, (error) => {
+        console.log(error)
+    });
+})
 
 module.exports = router;
