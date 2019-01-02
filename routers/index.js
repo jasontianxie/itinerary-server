@@ -23,8 +23,6 @@ router.get('/mainPageSlideData',(req,res) => {
 router.post('/newRouteForm', (req, res) => {
     const reqBody = req.body;
     let promises = [];
-    console.log("reqBody");
-    console.log(reqBody);
     if (reqBody.startSpotId === "") {//更新数据点
         promises.push(createSpot({
             country: reqBody.country,
@@ -79,6 +77,7 @@ router.post('/newRouteForm', (req, res) => {
             endDate: reqBody.endTime.split(" ")[0],
             endTime: reqBody.endTime.split(" ")[1],
             waitTime: parseInt(reqBody.waitTimeHours * 60 + reqBody.waitTimeMinutes),
+            spentTime: reqBody.timeSpent,
             vehicle: reqBody.vehicle,
             vehicleNote: reqBody.comments,
             cost: reqBody.cost,
@@ -92,6 +91,7 @@ router.post('/newRouteForm', (req, res) => {
                 endDate: reqBody.endTime.split(" ")[0],
                 endTime: reqBody.endTime.split(" ")[1],
                 waitTime: parseInt(reqBody.waitTimeHours * 60 + reqBody.waitTimeMinutes),
+                spentTime: reqBody.timeSpent,
                 vehicle: reqBody.vehicle,
                 vehicleNote: reqBody.comments,
                 cost: reqBody.cost,
@@ -100,7 +100,7 @@ router.post('/newRouteForm', (req, res) => {
     },(errors) =>{
         console.log(errors);
     }).then((res) =>{
-        console.log(res);
+        console.log("api newRouteForm is sucess");
     },(error) =>{
         console.log(error)
     })
