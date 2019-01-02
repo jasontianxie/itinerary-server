@@ -49,7 +49,7 @@ app.get('/mainPageSpotsData.json', (req, res) => {
     res.send(mainPageSpotsData.map((item)=>item+Math.floor(10*Math.random())));
 });
 
-app.post('/mainPageSpotsData.json', (req, res) => {
+app.post('/spots', (req, res) => {
     console.log('mainPageSpotsData post request is comming '+new Date());
     console.log(req.body);
     
