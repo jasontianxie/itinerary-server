@@ -20,6 +20,10 @@ router.get('/mainPageSlideData',(req,res) => {
         res.send(queryMainPageSlideData());
 });
 
+// router.get('/countryCityDistricts',(req,res) => {
+//     res.send();
+// });
+
 router.post('/newRouteForm', (req, res) => {
     const reqBody = req.body;
     let promises = [];
