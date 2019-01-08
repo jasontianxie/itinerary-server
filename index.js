@@ -3,6 +3,7 @@ const app = express();
 const port = 8000;
 const djkstra = require('./algorithm/djikstra');
 const bodyParser = require('body-parser');
+const cors = require('cors');
 
 const mainPageSlideData =[
     {pic:'http://localhost:8000/public/mainPageSlidePics/15380434541828.jpeg',href:'#',description:'this is a test'},
@@ -24,16 +25,14 @@ const mainPageSpotsData =[
 
 // console.log(djkstra(allVertex,distanceBetweenAnyTwoVertex));
 
+var corsOptions = {
+    origin: '*',
+    optionsSuccessStatus: 200 // some legacy browsers (IE11, various SmartTVs) choke on 204 
+  }
+app.use(cors(corsOptions));
 app.use('/public',express.static('static'));
 
 app.use(bodyParser.json()); // for parsing application/json
-
-app.use(function(req, res, next) {
-    res.header("Access-Control-Allow-Origin", "*");
-    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-    res.header('Access-Control-Allow-Methods', 'PUT, POST, GET, DELETE, OPTIONS');
-       next();
- });
 
 app.get('/mainPageSlideData', (req, res) => {
     console.log('mainPageSlideData request is comming '+new Date());

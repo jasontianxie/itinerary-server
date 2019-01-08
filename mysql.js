@@ -4,6 +4,7 @@ const app = express();
 const port = 8000;
 const bodyParser = require('body-parser');
 const router = require("./routers/index");
+const cors = require('cors');
 
 const connection = mysql.createConnection({
     host: 'localhost',
@@ -21,16 +22,15 @@ connection.connect(function (err) {
     console.log('connected as id ' + connection.threadId);
 });
 
+var corsOptions = {
+    origin: '*',
+    optionsSuccessStatus: 200 // some legacy browsers (IE11, various SmartTVs) choke on 204 
+  }
+app.use(cors(corsOptions));
+
 app.use('/public', express.static('static'));
 
 app.use(bodyParser.json()); // for parsing application/json
-
-app.use(function (req, res, next) {
-    res.header("Access-Control-Allow-Origin", "*");
-    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-    res.header('Access-Control-Allow-Methods', 'PUT, POST, GET, DELETE, OPTIONS');
-    next();
-});
 
 app.use('/', router);
 
