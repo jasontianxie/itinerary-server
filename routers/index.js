@@ -20,32 +20,29 @@ router.get('/mainPageSlideData',(req,res) => {
         res.send(queryMainPageSlideData());
 });
 
-// router.get('/countryCityDistricts',(req,res) => {
-//     res.send();
-// });
 
 router.post('/newRouteForm', (req, res) => {
     const reqBody = req.body;
     let promises = [];
     if (reqBody.startSpotId === "") {//更新数据点
         promises.push(createSpot({
-            country: reqBody.country,
-            level1: reqBody.startSelect[0] || null,
-            level2: reqBody.startSelect[1] || null,
-            level3: reqBody.startSelect[2] || null,
-            level4: reqBody.startSelect[3] || null,
-            level5: reqBody.startSelect[4] || null,
+            country: reqBody.startSelect[0] || null,
+            level1: reqBody.startSelect[1] || null,
+            level2: reqBody.startSelect[2] || null,
+            level3: reqBody.startSelect[3] || null,
+            level4: reqBody.startSelect[4] || null,
+            level5: reqBody.startSelect[5] || null,
             fullname: reqBody.startSpot,
         }));
     }
     if (reqBody.endSpotId === "") {//更新数据点
         promises.push(createSpot({
-            country: reqBody.country,
-            level1: reqBody.endSelect[0] || null,
-            level2: reqBody.endSelect[1] || null,
-            level3: reqBody.endSelect[2] || null,
-            level4: reqBody.endSelect[3] || null,
-            level5: reqBody.endSelect[4] || null,
+            country: reqBody.startSelect[0] || null,
+            level1: reqBody.endSelect[1] || null,
+            level2: reqBody.endSelect[2] || null,
+            level3: reqBody.endSelect[3] || null,
+            level4: reqBody.endSelect[4] || null,
+            level5: reqBody.endSelect[5] || null,
             fullname: reqBody.endSpot,
         }));
     }
@@ -67,7 +64,7 @@ router.post('/newRouteForm', (req, res) => {
         } else if (results.length === 1 && reqBody.endSpotId !== "") {// 如果只有终点存在
             return createRoute({startSpotID: results[0].id, endSpotID: reqBody.endSpotId});
         } else {// 如果两个点都不存在
-            return createRoute({startSpotID: reqBody.startSpotId, endSpotID: reqBody.endSpotId});
+            return createRoute({startSpotID: results[0].id, endSpotID: results[1].id});
         }
     },(errors)=>{
         console.log(errors);
