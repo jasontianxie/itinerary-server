@@ -5,6 +5,7 @@ const {createSpot, findSpots} = require("../modles/spots");
 const {createRoute, queryRoute} = require("../modles/routes");
 const {createNewRecord, createNewRouteTable} = require("../modles/routeDetail");
 const queryMainPageSlideData = require("../modles/mainPageSlideData");
+const { createItinerary } = require("../modles/itineraries");
 const Op = require('sequelize').Op;
 
 router.post('/users',(req,res) => {
@@ -122,6 +123,16 @@ router.post('/spots', (req, res) => {
     }
     findSpots(queryObj).then((results) => {
         res.send(results);
+    }, (error) => {
+        console.log(error)
+    });
+});
+
+router.post('/itineraries', (req, res) => {
+    let reqBody = req.body;
+
+    createItinerary({userId:reqBody.userId,contentHtml: reqBody.contentHtml}).then((results) => {
+        res.send("success");
     }, (error) => {
         console.log(error)
     });
