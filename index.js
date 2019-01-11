@@ -55,4 +55,20 @@ app.post('/spots', (req, res) => {
     res.send(mainPageSpotsData);
 });
 
+app.post('/itineraries', (req, res) => {
+    let reqBody = req.body,
+    contentHtml = reqBody.contentHtml;
+
+    // 将文本中可能存在的除img，vedio，br之外的所有script标签替换成文本，并且img和vedio标签的src必须是指定的地址（用户上传过后，在本网站生成的地址），不能是用户随意写的
+    
+    contentHtml = contentHtml.replace(/<(img src="https\:\/\/ss0\.bdstatic\.com[^>]*)>/g, "@01212dfgdfgdfgdAASFSADFASDF*$1@234523453sdfgsgsdERHGHSH*");
+    contentHtml = contentHtml.replace(/</g, "&lt;").replace(/>/g, "&gt;"); //过滤所有html标签
+    contentHtml = contentHtml.replace(/\&lt\;(\/?)div\&gt\;/g, "<$1div>"); // 显示div标签
+    contentHtml = contentHtml.replace(/\&lt\;br(\/?)\&gt\;/gi, "<br$1>"); //显示br标签
+    contentHtml = contentHtml.replace(/\@01212dfgdfgdfgdAASFSADFASDF\*/g, "<").replace(/\@234523453sdfgsgsdERHGHSH\*/g, ">"); //显示img标签，并且该img标签的地址必须以特定网址开头
+
+    console.log(contentHtml);
+    res.send("success");
+});
+
 app.listen(port, () => console.log(`Example app listening on port ${port}!`));
