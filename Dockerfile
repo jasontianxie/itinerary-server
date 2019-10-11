@@ -5,4 +5,5 @@ LABEL maintainer="1986tianxie@sina.com"
 WORKDIR /var/www/itinerary/
 RUN npm install
 EXPOSE 3333
-ENTRYPOINT ["node", "dev.js"]
+ENTRYPOINT ["npm", "run"]
+CMD ["start"]
