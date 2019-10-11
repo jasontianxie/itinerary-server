@@ -9,7 +9,7 @@ node {
         remote.password = password
         stage('Build') { 
          sshCommand remote: remote, command: "cd /var/jenkins_node/workspace/itinerary-server \
-         && cp -r ./ ~/web/itinerary"
+         && cp -r ./ ~/web/itinerary/"
         }
         stage('Test') { 
             echo 'test is running' 
