@@ -3,5 +3,6 @@ RUN mkdir -p /var/www/itinerary/
 COPY . /var/www/itinerary/
 LABEL maintainer="1986tianxie@sina.com"
 WORKDIR /var/www/itinerary/
-RUN npm install && node dev.js
+RUN npm install
 EXPOSE 3333
+ENTRYPOINT ["node", "dev.js"]
