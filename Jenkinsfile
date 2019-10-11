@@ -3,7 +3,10 @@ node {
     def remote = [:]
     remote.name = '129.28.183.129'
     remote.host = '129.28.183.129'
+    remote.port = 65500
     remote.allowAnyHosts = true  
+    remote.timeoutSec = 60  
+    remote.retryCount = 3
     withCredentials([usernamePassword(credentialsId: '06416c52-21b1-4ea3-a6a9-8880a932ccf9', passwordVariable: 'password', usernameVariable: 'username')]) {
         remote.user = username
         remote.password = password
