@@ -8,11 +8,8 @@ node {
         remote.user = username
         remote.password = password
         stage('Build') { 
-         sshCommand remote: remote, command: ". ~/.nvm/nvm.sh \
-         && nvm use v10.15.3 \
-         && cd /var/jenkins_node/workspace/create-react-app-typescript-itinerary \
-         && npm install \
-         && npm run build"
+         sshCommand remote: remote, command: "cd /var/jenkins_node/workspace/itinerary-server \
+         && cp -r ./ ~/web/itinerary"
         }
         stage('Test') { 
             echo 'test is running' 
