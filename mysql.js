@@ -28,7 +28,8 @@ var corsOptions = {
   }
 app.use(cors(corsOptions));
 
-app.use('/public', express.static('static'));
+app.use('/public',express.static('static',{index: false}));
+app.use(express.static('front-end'));
 
 app.use(bodyParser.json()); // for parsing application/json
 
