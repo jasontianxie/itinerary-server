@@ -1,9 +1,10 @@
 const Sequelize = require('sequelize');
-const sequelize = new Sequelize('itinerary', 'root', '123456ABCabc', {
-  host: 'localhost',
-  dialect: 'mysql',
+const connectInfo = require('../connectInfo.json');
+const sequelize = new Sequelize(connectInfo.database, connectInfo.username, connectInfo.password, {
+  host: connectInfo.host,
+  dialect: connectInfo.dialect,
 
-  port:3306,
+  port:connectInfo.port,
   pool: {
     max: 5,
     min: 0,
