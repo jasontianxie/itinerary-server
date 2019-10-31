@@ -1,5 +1,5 @@
 const Sequelize = require('sequelize');
-const connectInfo = require('../connectInfo.json');
+const connectInfo = require('../connectInfo.json'); //这个文件是存在服务器上的
 const sequelize = new Sequelize(connectInfo.database, connectInfo.username, connectInfo.password, {
   host: connectInfo.host,
   dialect: connectInfo.dialect,

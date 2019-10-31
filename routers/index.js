@@ -18,7 +18,12 @@ router.post('/users',(req,res) => {
 });
 
 router.get('/mainPageSlideData',(req,res) => {
-        res.send(queryMainPageSlideData());
+        queryMainPageSlideData().then((results) =>{
+            res.send(results);
+        },(errors) =>{
+            console.log(errors);
+            res.end();
+        });
 });
 
 
