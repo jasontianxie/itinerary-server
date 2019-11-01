@@ -26,7 +26,7 @@ const itinerary_medias = instanse.sequelize.define("itinerary_medias", {
 });
 
 function queryMainPageSlideData(){
-    main_page_slides.findAll({// 先查找出某一期的所有游记id
+    return main_page_slides.findAll({// 先查找出某一期的所有游记id
         where: {
             week: "2019-10-28"
         }
@@ -52,13 +52,5 @@ function queryMainPageSlideData(){
         return Promise.all(headPicIds)
     })  
 }
-
-// const mainPageSlideData = [
-//     { pic: 'http://localhost:8000/public/mainPageSlidePics/15380434541828.jpeg', href: '#', description: 'this is a test' },
-//     { pic: 'http://localhost:8000/public/mainPageSlidePics/15381044615697.jpeg', href: '#', description: 'this is a test' },
-//     { pic: 'http://localhost:8000/public/mainPageSlidePics/15381045921996.jpeg', href: '#', description: 'this is a test' },
-//     { pic: 'http://localhost:8000/public/mainPageSlidePics/15381046688621.jpeg', href: '#', description: 'this is a test' },
-//     { pic: 'http://localhost:8000/public/mainPageSlidePics/15381048978867.jpeg', href: '#', description: 'this is a test' },
-// ]
 
 module.exports = queryMainPageSlideData;

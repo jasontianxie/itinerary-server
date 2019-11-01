@@ -17,7 +17,7 @@ router.post('/users',(req,res) => {
     })
 });
 
-router.get('/mainPageSlideData',(req,res) => {
+router.get('/api/mainPageSlideData',(req,res) => {
         queryMainPageSlideData().then((results) =>{
             res.send(results);
         },(errors) =>{
