@@ -20,7 +20,8 @@ const itinerary_medias = instanse.sequelize.define("itinerary_medias", {
     itineraryId: { type: instanse.Sequelize.INTEGER, primaryKey: true },
     mediaId: instanse.Sequelize.CHAR,
     name: instanse.Sequelize.CHAR,
-    path: instanse.Sequelize.CHAR
+    path: instanse.Sequelize.CHAR,
+    mediaName: instanse.Sequelize.CHAR
 },{
     timestamps: false
 });
@@ -33,7 +34,7 @@ function queryMainPageSlideData(){
     }).then((res) => {
         let itineraryIds = []
         res.forEach((item) => {
-            itineraryIds.push(itineraries.findAll({ // 然后根据游记id，查找出这篇游记的头图的id
+            itineraryIds.push(itineraries.find({ // 然后根据游记id，查找出这篇游记的头图的id
                 where: {
                     itineraryId: item.itineraryId
                 }
@@ -43,9 +44,9 @@ function queryMainPageSlideData(){
     }, (error) => console.log(error)).then((itineraryArray) => {
         let headPicIds = []
         itineraryArray.forEach((i) => {
-            headPicIds.push(itinerary_medias.findAll({
+            headPicIds.push(itinerary_medias.find({ // 然后根据头图id，查找出这篇游记的头图的所有信息
                 where: {
-                    mediaId: i[0].headPicId
+                    mediaId: i.headPicId
                 }
             }))
         })
