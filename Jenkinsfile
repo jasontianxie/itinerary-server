@@ -24,7 +24,7 @@ node {
             && cd ~/web/itinerary \
             && docker build --rm --no-cache=true -t itinerary-createreactapp-docker-image -f ~/web/itinerary/Dockerfile . \
             && docker rmi \$(docker images -f 'dangling=true' -q) \
-            && docker run -d --name itinerary-createreactapp-docker-container -p 3333:3333 itinerary-createreactapp-docker-image"
+            && docker run -d --name itinerary-createreactapp-docker-container -p 3333:3333 -v /var/itinerary_upload:/var/www/itinerary/uploads itinerary-createreactapp-docker-image"
         }
     }  
 }
