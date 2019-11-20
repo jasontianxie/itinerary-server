@@ -34,5 +34,6 @@ app.use(express.static('front-end'));
 app.use(bodyParser.json()); // for parsing application/json
 
 app.use('/', router);
+app.use('/uploads', require('./routers/upload_parts'))
 
 app.listen(port, () => console.log(`Example app listening on port ${port}!`))
