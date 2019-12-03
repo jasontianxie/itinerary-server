@@ -3,7 +3,8 @@ const router = express.Router();
 const multer  = require('multer');
 const path = require('path');
 const fs = require('fs');
-const upload = multer({ dest: 'uploads/multer/' })
+const rimraf = require('../utils/removeDir');
+const upload = multer({ dest: 'uploads/multer/' });
 
 router.post('/parts', upload.single('file'),  (req, res) => {
   // 接受图片唯一标识符号
@@ -17,6 +18,10 @@ router.post('/parts', upload.single('file'),  (req, res) => {
       fs.readFile(req.file.path, function (err, data) { //读取请求中multer处理过的文件数据，并按照uuid和分片的序号为分片的名字写入到服务器上，这里的req.file.path就是最开始multer初始化的时候定义的文件存储位置
         fs.writeFile(path.join(filepath, pieceNumber), data, (err) => {
           if (!err) {
+            fs.unlink(req.file.path, (err) => { //删除multer生成的临时文件
+              if (err) throw err;
+              console.log('临时文件已删除');
+            });
             res.send("写入后面的文件")
           }
         })
@@ -26,6 +31,10 @@ router.post('/parts', upload.single('file'),  (req, res) => {
       fs.readFile(req.file.path, function (err, data) {
         fs.writeFile(path.join(filepath, pieceNumber), data, (err) => {
           if (!err) {
+            fs.unlink(req.file.path, (err) => { //删除multer生成的临时文件
+              if (err) throw err;
+              console.log('临时文件已删除');
+            });
             res.send("第一次写入并新建文件夹")
           }
         })
@@ -53,6 +62,11 @@ router.post('/merge',  (req, res) => {
           merge()
         })
       } else {
+        // fs.rmdir(partsPath, {recursive: true}, function(err) {
+        //   if (err) throw err;
+        //   console.log('合并成功后，删除文件的各个分片');
+        // })
+        rimraf(partsPath);
         res.send("上传完成，合并成功")
       }
     }
