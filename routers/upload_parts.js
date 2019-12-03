@@ -6,7 +6,6 @@ const fs = require('fs');
 const upload = multer({ dest: 'uploads/multer/' })
 
 router.post('/parts', upload.single('file'),  (req, res) => {
-    console.log(req.body)
   // 接受图片唯一标识符号
     let fileId = req.body.fileId;
     // 接受切片索引
@@ -34,8 +33,35 @@ router.post('/parts', upload.single('file'),  (req, res) => {
     }
 })
 
-router.get('/merge', upload.single('file'),  (req, res) => {
-
+router.post('/merge',  (req, res) => {
+  let {fileId, fileName} = req.body;
+  let fileSplit = fileName.split(".");
+  let fileExt = fileSplit[fileSplit.length - 1];
+  let partsPath = path.resolve(process.cwd(), `uploads/named_ordered_parts/${fileId}`);
+  // let writeStream;
+  // fs.open(`${partsPath}.${fileExt}`, 'w+', () => {
+  let  writeStream = fs.createWriteStream(`${partsPath}.${fileExt}`, {flags: 'a' });
+  // })
+  fs.readdir(partsPath, (err, files) => {
+    let piece, piecesNumber = 1;
+    function merge() {
+      if (piecesNumber <= files.length) {
+        piece = fs.createReadStream(`${partsPath}/${piecesNumber}`)
+        piece.pipe(writeStream, { end: (piecesNumber === files.length) })
+        piece.on("end", () => {
+          piecesNumber++;
+          merge()
+        })
+      } else {
+        res.send("上传完成，合并成功")
+      }
+    }
+    if (err) {
+      console.log("readdir出错")
+    } else {
+      merge()
+    }
+  })
 })
 
 module.exports = router
