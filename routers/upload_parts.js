@@ -47,10 +47,7 @@ router.post('/merge',  (req, res) => {
   let fileSplit = fileName.split(".");
   let fileExt = fileSplit[fileSplit.length - 1];
   let partsPath = path.resolve(process.cwd(), `uploads/named_ordered_parts/${fileId}`);
-  // let writeStream;
-  // fs.open(`${partsPath}.${fileExt}`, 'w+', () => {
   let  writeStream = fs.createWriteStream(`${partsPath}.${fileExt}`, {flags: 'a' });
-  // })
   fs.readdir(partsPath, (err, files) => {
     let piece, piecesNumber = 1;
     function merge() {
@@ -62,10 +59,6 @@ router.post('/merge',  (req, res) => {
           merge()
         })
       } else {
-        // fs.rmdir(partsPath, {recursive: true}, function(err) {
-        //   if (err) throw err;
-        //   console.log('合并成功后，删除文件的各个分片');
-        // })
         rimraf(partsPath);
         res.send("上传完成，合并成功")
       }
