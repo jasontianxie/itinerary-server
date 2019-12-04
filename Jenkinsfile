@@ -7,7 +7,7 @@ node {
     remote.allowAnyHosts = true  
     remote.timeoutSec = 60  
     remote.retryCount = 3
-    withCredentials([usernamePassword(credentialsId: '48cfb620-7d19-4d2a-a9fd-4fea4ed48ad7', passwordVariable: 'password', usernameVariable: 'username')]) {
+    withCredentials([usernamePassword(credentialsId: '0cb3a40b-afea-4037-b6ca-86509de166e1', passwordVariable: 'password', usernameVariable: 'username')]) {
         remote.user = username
         remote.password = password
         stage('Build') { 
