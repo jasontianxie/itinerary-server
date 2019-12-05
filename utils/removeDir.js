@@ -1,5 +1,5 @@
-const fs = require('fs');
-const path = require('path');
+const fs = require("fs");
+const path = require("path");
 
 function rimraf(dir_path) {
     if (fs.existsSync(dir_path)) {
@@ -13,6 +13,6 @@ function rimraf(dir_path) {
         });
         fs.rmdirSync(dir_path);
     }
-  }
+}
 
 module.exports = rimraf;
