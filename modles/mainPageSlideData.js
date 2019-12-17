@@ -34,7 +34,7 @@ function queryMainPageSlideData(){
     }).then((res) => {
         let itineraryIds = []
         res.forEach((item) => {
-            itineraryIds.push(itineraries.find({ // 然后根据游记id，查找出这篇游记的头图的id
+            itineraryIds.push(itineraries.findAll({ // 然后根据游记id，查找出这篇游记的头图的id
                 where: {
                     itineraryId: item.itineraryId
                 }
@@ -44,9 +44,9 @@ function queryMainPageSlideData(){
     }, (error) => console.log(error)).then((itineraryArray) => {
         let headPicIds = []
         itineraryArray.forEach((i) => {
-            headPicIds.push(itinerary_medias.find({ // 然后根据头图id，查找出这篇游记的头图的所有信息
+            headPicIds.push(itinerary_medias.findAll({ // 然后根据头图id，查找出这篇游记的头图的所有信息
                 where: {
-                    mediaId: i.headPicId
+                    mediaId: i[0].headPicId
                 }
             }))
         })

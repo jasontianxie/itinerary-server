@@ -7,7 +7,7 @@ node {
     remote.allowAnyHosts = true  
     remote.timeoutSec = 60  
     remote.retryCount = 3
-    withCredentials([usernamePassword(credentialsId: '48cfb620-7d19-4d2a-a9fd-4fea4ed48ad7', passwordVariable: 'password', usernameVariable: 'username')]) {
+    withCredentials([usernamePassword(credentialsId: '0cb3a40b-afea-4037-b6ca-86509de166e1', passwordVariable: 'password', usernameVariable: 'username')]) {
         remote.user = username
         remote.password = password
         stage('Build') { 
@@ -24,7 +24,7 @@ node {
             && cd ~/web/itinerary \
             && docker build --rm --no-cache=true -t itinerary-createreactapp-docker-image -f ~/web/itinerary/Dockerfile . \
             && docker rmi \$(docker images -f 'dangling=true' -q) \
-            && docker run -d --name itinerary-createreactapp-docker-container -p 3333:3333 itinerary-createreactapp-docker-image"
+            && docker run -d --name itinerary-createreactapp-docker-container -p 3333:3333 -v /var/itinerary_upload:/var/www/itinerary/uploads itinerary-createreactapp-docker-image"
         }
     }  
 }
