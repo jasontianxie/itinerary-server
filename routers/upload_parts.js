@@ -4,6 +4,7 @@ const multer  = require("multer");
 const path = require("path");
 const fs = require("fs");
 const rimraf = require("../utils/removeDir");
+const getDirSize = require("../utils/getDirSize");
 const upload = multer({ dest: "uploads/multer/",});
 
 router.post("/parts", upload.single("file"),  (req, res) => {
@@ -30,7 +31,14 @@ router.post("/parts", upload.single("file"),  (req, res) => {
     if (fs.existsSync(filepath)) {
         fs.readFile(req.file.path, function (err, data) { //读取请求中multer处理过的文件数据，并按照uuid和分片的序号为分片的名字写入到服务器上，这里的req.file.path就是最开始multer初始化的时候定义的文件存储位置
             fs.writeFile(path.join(filepath, pieceNumber), data, (err) => {
-                if (!err) {
+                if (getDirSize(filepath) > 10240) { // 如果文件大于10M，则删除
+                    fs.unlink(req.file.path, (err) => { //删除multer生成的临时文件
+                        if (err) throw err;
+                        console.log("临时文件已删除");
+                    });
+                    rimraf(partsPath); // 删除过大的文件
+                    res.send({code: 2, message: "文件不能大于10M",})
+                } else if (!err) {
                     fs.unlink(req.file.path, (err) => { //删除multer生成的临时文件
                         if (err) throw err;
                         console.log("临时文件已删除");
