@@ -73,7 +73,7 @@ router.post("/merge",  (req, res) => {
                 });
             } else {
                 rimraf(partsPath);
-                res.send("上传完成，合并成功");
+                res.send({code: 0, path: `/media/${partsPath}.${fileExt}`});
             }
         }
         if (err) {
