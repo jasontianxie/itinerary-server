@@ -72,7 +72,7 @@ router.post("/merge",  (req, res) => {
                     merge();
                 });
             } else {
-                rimraf(partsPath);
+                rimraf(partsPath); //上传成功后删除临时文件夹
                 res.send({code: 0, path: `/media/${fileId}.${fileExt}`});
             }
         }
