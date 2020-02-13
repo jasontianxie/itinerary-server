@@ -29,7 +29,8 @@ var corsOptions = {
 app.use(cors(corsOptions));
 
 app.use("/public",express.static("static",{index: false,}));
-app.use("/public/address",(req,res) => {
+app.use("/media",express.static("uploads/named_ordered_parts",{index: false,}));
+app.use("/public/address",(req,res) => { // 如果上面的/public/address下可以找到地址的json就用上面的，否则就返回空，如果这里不返回空，前端会收到404的错误
     res.end(JSON.stringify([]));
 });
 app.use(express.static("front-end"));

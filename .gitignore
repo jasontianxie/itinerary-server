@@ -65,3 +65,6 @@ typings/
 
 # mysql authentication info file
 connectInfo.json
+
+# uploads/
+uploads/
