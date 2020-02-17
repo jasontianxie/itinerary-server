@@ -4,6 +4,7 @@ const multer  = require("multer");
 const path = require("path");
 const fs = require("fs");
 const rimraf = require("../utils/removeDir");
+const {insertMedia} = require("../models/uploadMedias")
 const upload = multer({ dest: "uploads/multer/",});
 
 router.post("/parts", upload.single("file"),  (req, res) => {
@@ -56,7 +57,7 @@ router.post("/parts", upload.single("file"),  (req, res) => {
 });
 
 router.post("/merge",  (req, res) => {
-    let {fileId, fileName,} = req.body;
+    let {fileId, fileName, spotId = null} = req.body;
     let fileSplit = fileName.split(".");
     let fileExt = fileSplit[fileSplit.length - 1];
     let partsPath = path.resolve(process.cwd(), `uploads/named_ordered_parts/${fileId}`);
@@ -73,7 +74,16 @@ router.post("/merge",  (req, res) => {
                 });
             } else {
                 rimraf(partsPath); //上传成功后删除临时文件夹
-                res.send({code: 0, path: `/media/${fileId}.${fileExt}`});
+                insertMedia({
+                    spotId,
+                    mediaName: `${fileId}.${fileExt}`,
+                    name: fileName,
+                    path: `/media/${fileId}.${fileExt}`
+                }).then(() => {
+                    res.send({code: 0, path: `/media/${fileId}.${fileExt}`});
+                }).catch(() => {
+                    res.send({code: 3, message:"写入数据库出错"})
+                })
             }
         }
         if (err) {
