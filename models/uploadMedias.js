@@ -13,8 +13,7 @@ const Medias = instanse.sequelize.define("medias", {
 
 function insertMedia(data) {
     if (!data.spotId) {
-        return createSpot({}).then((result) => {
-            console.log(result)
+        return createSpot({}).then((result) => { // result就是刚插入的条目
             return Medias.create({
                 spotId: result.spotId,
                 mediaName: data.mediaName,

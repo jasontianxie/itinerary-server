@@ -79,8 +79,8 @@ router.post("/merge",  (req, res) => {
                     mediaName: `${fileId}.${fileExt}`,
                     name: fileName,
                     path: `/media/${fileId}.${fileExt}`
-                }).then(() => {
-                    res.send({code: 0, path: `/media/${fileId}.${fileExt}`});
+                }).then((result) => {
+                    res.send({code: 0, path: `/media/${fileId}.${fileExt}`, spotId: result.spotId});
                 }).catch(() => {
                     res.send({code: 3, message:"写入数据库出错"})
                 })
