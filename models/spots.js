@@ -2,6 +2,7 @@ const instanse = require("./index");
 
 const Spots = instanse.sequelize.define("spots", {
     spotId: { type: instanse.Sequelize.INTEGER, primaryKey: true, autoIncrement: true },
+    description: instanse.Sequelize.TEXT,
     itineraryId: instanse.Sequelize.INTEGER,
     level1: instanse.Sequelize.CHAR,
     level2: instanse.Sequelize.CHAR,
@@ -21,6 +22,7 @@ const Spots = instanse.sequelize.define("spots", {
 function createSpot(data) {
     return Spots.create({
         itineraryId: data.itineraryId || 0,
+        description: data.description || "",
         level1: data.level1 || "",
         level2: data.level2 || "",
         level3: data.level3 || "",
