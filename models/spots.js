@@ -11,6 +11,8 @@ const Spots = instanse.sequelize.define("spots", {
     spotName: instanse.Sequelize.CHAR,
     spotNameCN: instanse.Sequelize.CHAR, // 该点的具体中文名称
     spotNamePY: instanse.Sequelize.CHAR, // 该点的名称的拼音
+    longitude: instanse.Sequelize.CHAR, // 该点经度
+    latitude: instanse.Sequelize.CHAR, // 该点的纬度
     time: instanse.Sequelize.INTEGER, // 什么时间到达该点
 },{
     timestamps: false
@@ -27,6 +29,8 @@ function createSpot(data) {
         spotName: data.spotName || "",
         spotNameCN: data.spotNameCN || "",
         spotNamePY: data.spotNamePY || "",
+        longitude: data.longitude || "",
+        latitude: data.latitude || "",
         time: data.time || 0,
     });
 }
