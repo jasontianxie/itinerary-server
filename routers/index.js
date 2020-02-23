@@ -1,11 +1,11 @@
 const express = require('express');
 const router = express.Router();
-const queryUsers = require("../modles/users");
-const {createSpot, findSpots} = require("../modles/spots");
-const {createRoute, queryRoute} = require("../modles/routes");
-const {createNewRecord, createNewRouteTable} = require("../modles/routeDetail");
-const queryMainPageSlideData = require("../modles/mainPageSlideData");
-const { createItinerary } = require("../modles/itineraries");
+const queryUsers = require("../models/users");
+const {createSpot, findSpots} = require("../models/spots");
+const {createRoute, queryRoute} = require("../models/routes");
+const {createNewRecord, createNewRouteTable} = require("../models/routeDetail");
+const queryMainPageSlideData = require("../models/mainPageSlideData");
+const { createItinerary } = require("../models/itineraries");
 const Op = require('sequelize').Op;
 
 router.post('/users',(req,res) => {
