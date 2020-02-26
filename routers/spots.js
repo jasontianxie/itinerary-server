@@ -19,7 +19,7 @@ router.post("/update", (req, res) => {
         latitude: data.latitude || '',
         time: data.time || 0
     }).then((result) => {
-        res.send({code: 0, message: '写入地点信息成功'})
+        res.send({code: 0, spotId: result.spotId, message: '写入地点信息成功'})
     }).catch((err) => {
         res.send({code:1, message: '写入地点信息失败'})
     })
