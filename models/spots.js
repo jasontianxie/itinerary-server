@@ -57,8 +57,8 @@ function createSpot(data) {
     });
 }
 
-function findSpots(reqValue) {
-    return Spots.findAll({where:reqValue});
+function findSpots(reqValue) { // reqVale为一个对象
+    return Spots.findAll({where:reqValue,});
 }
 
-module.exports = {createSpot, findSpots};
+module.exports = {createSpot, findSpots,};
