@@ -4,7 +4,8 @@ const multer  = require("multer");
 const path = require("path");
 const fs = require("fs");
 const rimraf = require("../utils/removeDir");
-const {insertMedia} = require("../models/uploadMedias")
+const {insertMedia,} = require("../models/uploadMedias");
+const {findSpots,} = require("../models/spots");
 const upload = multer({ dest: "uploads/multer/",});
 
 router.post("/parts", upload.single("file"),  (req, res) => {
@@ -57,7 +58,7 @@ router.post("/parts", upload.single("file"),  (req, res) => {
 });
 
 router.post("/merge",  (req, res) => {
-    let {fileId, fileName, spotId = null} = req.body;
+    let {fileId, fileName, spotId = null,} = req.body;
     let fileSplit = fileName.split(".");
     let fileExt = fileSplit[fileSplit.length - 1];
     let partsPath = path.resolve(process.cwd(), `uploads/named_ordered_parts/${fileId}`);
@@ -78,12 +79,14 @@ router.post("/merge",  (req, res) => {
                     spotId,
                     mediaName: `${fileId}.${fileExt}`,
                     name: fileName,
-                    path: `/media/${fileId}.${fileExt}`
+                    path: `/media/${fileId}.${fileExt}`,
                 }).then((result) => {
-                    res.send({code: 0, path: `/media/${fileId}.${fileExt}`, spotId: result.spotId});
+                    findSpots({spotId: result.spotId,}).then((entries) => {
+                        res.send({code: 0, path: `/media/${fileId}.${fileExt}`, spotId: result.spotId, itineraryId: entries[0].itineraryId});
+                    });
                 }).catch(() => {
-                    res.send({code: 3, message:"写入数据库出错"})
-                })
+                    res.send({code: 3, message:"写入数据库出错",});
+                });
             }
         }
         if (err) {

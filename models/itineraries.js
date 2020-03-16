@@ -1,18 +1,16 @@
 const instanse = require("./index");
 
 const Itineraries = instanse.sequelize.define("itineraries", {
-    id: { type: instanse.Sequelize.INTEGER, primaryKey: true, autoIncrement: true },
-    userId: instanse.Sequelize.INTEGER,
-    contentHtml: instanse.Sequelize.TEXT,
+    itineraryId: { type: instanse.Sequelize.INTEGER, primaryKey: true, autoIncrement: true, },
+    draft: instanse.Sequelize.INTEGER,
 },{
-    timestamps: false
+    timestamps: false,
 });
 
 function createItinerary(value) {
     return Itineraries.create({
-        userId: value.userId,
-        contentHtml: value.contentHtml,
+        draft: value,
     });
 }
 
-module.exports = { createItinerary };
+module.exports = { createItinerary, };
