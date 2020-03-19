@@ -1,29 +1,19 @@
-const express = require('express');
+const express = require("express");
 const router = express.Router();
-const queryUsers = require("../models/users");
-const {createSpot, findSpots} = require("../models/spots");
-const {createRoute, queryRoute} = require("../models/routes");
-const {createNewRecord, createNewRouteTable} = require("../models/routeDetail");
+const {createSpot, findSpots,} = require("../models/spots");
+const {createRoute, queryRoute,} = require("../models/routes");
+const {createNewRecord, createNewRouteTable,} = require("../models/routeDetail");
 const queryMainPageSlideData = require("../models/mainPageSlideData");
-const { createItinerary } = require("../models/itineraries");
-const Op = require('sequelize').Op;
+const { createItinerary, } = require("../models/itineraries");
+const Op = require("sequelize").Op;
 
-router.post('/users',(req,res) => {
-    queryUsers(req.body.userName, req.body.password).then((results) =>{
+router.get("/api/mainPageSlideData",(req,res) => {
+    queryMainPageSlideData().then((results) =>{
         res.send(results);
     },(errors) =>{
         console.log(errors);
         res.end();
-    })
-});
-
-router.get('/api/mainPageSlideData',(req,res) => {
-        queryMainPageSlideData().then((results) =>{
-            res.send(results);
-        },(errors) =>{
-            console.log(errors);
-            res.end();
-        });
+    });
 });
 
 

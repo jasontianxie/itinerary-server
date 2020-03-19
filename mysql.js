@@ -40,5 +40,6 @@ app.use(bodyParser.json()); // for parsing application/json
 app.use("/", router);
 app.use("/api/uploads", require("./routers/upload_parts"));
 app.use("/api/spots", require("./routers/spots"));
+app.use("/api/users", require("./routers/users"));
 
 app.listen(port, () => console.log(`Example app listening on port ${port}!`));
