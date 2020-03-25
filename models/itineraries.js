@@ -13,4 +13,8 @@ function createItinerary(value) {
     });
 }
 
-module.exports = { createItinerary, };
+function findItineraries(reqValue) { // reqVale为一个对象
+    return Itineraries.findAll({where:reqValue,});
+}
+
+module.exports = { createItinerary, findItineraries, };
