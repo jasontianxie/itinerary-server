@@ -41,5 +41,6 @@ app.use("/", router);
 app.use("/api/uploads", require("./routers/upload_parts"));
 app.use("/api/spots", require("./routers/spots"));
 app.use("/api/users", require("./routers/users"));
+app.use("/api/itineraries", require("./routers/itineraries"));
 
 app.listen(port, () => console.log(`Example app listening on port ${port}!`));
