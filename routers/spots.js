@@ -1,14 +1,15 @@
 const express = require("express");
 const router = express.Router();
-const {createSpot,} = require("../models/spots");
+const {createSpot, findSpots} = require("../models/spots");
 
-router.post("/update", (req, res) => {
+router.post("/update", (req, res) => { //更新spot信息或者新建一个spot
     const data = req.body;
     if (data.spotId) { // 如果有spotId,则说明是在编辑已经存在的地点
         console.log(data.spotId);
     } else { // 如果没有spotId,则说明是在创建新的地点
         createSpot({
             itineraryId: data.itineraryId,
+            spotOrder: data.spotOrder,
             description: data.spotDescription || "",
             level1: data.level1 ? ((data.level1 &&typeof(data.level1) === "string") ? data.level1 : data.level1.name) : "",
             level2: data.level2 ? ((data.level2 &&typeof(data.level2) === "string") ? data.level2 : data.level2.name) : "",
@@ -29,4 +30,9 @@ router.post("/update", (req, res) => {
     }
 });
 
+router.get("/list",(req, res) => {
+    findSpots({itineraryId: req.query.itineraryId}).then((result) => {
+        res.send(result)
+    })
+})
 module.exports = router;

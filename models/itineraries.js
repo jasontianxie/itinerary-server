@@ -21,4 +21,4 @@ function findItineraries(reqValue) { // reqVale为一个对象
     return Itineraries.findAll({where:reqValue,});
 }
 
-module.exports = { createItinerary, findItineraries, };
+module.exports = { Itineraries, createItinerary, findItineraries, };
