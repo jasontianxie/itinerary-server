@@ -1,8 +1,10 @@
 const express = require("express");
 const router = express.Router();
+const needLogin = require("./needLogin");
 const {createSpot, findSpots} = require("../models/spots");
 
 router.post("/update", (req, res) => { //更新spot信息或者新建一个spot
+    if(needLogin(req, res)) return;
     const data = req.body;
     if (data.spotId) { // 如果有spotId,则说明是在编辑已经存在的地点
         console.log(data.spotId);
@@ -31,6 +33,7 @@ router.post("/update", (req, res) => { //更新spot信息或者新建一个spot
 });
 
 router.get("/list",(req, res) => {
+    if(needLogin(req, res)) return;
     findSpots({itineraryId: req.query.itineraryId}).then((result) => {
         res.send(result)
     })

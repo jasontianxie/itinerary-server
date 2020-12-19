@@ -32,8 +32,13 @@ var corsOptions = {
 var fileStoreOptions = {};
  
 app.use(session({
+    name: 'sessionId',
+    cookie: { path: '/', httpOnly: true, secure: false, maxAge: 1800000 },
+    resave: false,
+    saveUninitialized: true, 
     store: new FileStore(fileStoreOptions),
-    secret: 'identify secret'
+    secret: 'identify secret',
+    rolling: true
 }));
 
 app.use(cors(corsOptions));
@@ -46,12 +51,15 @@ app.use("/public/address",(req,res) => { // 如果上面的/public/address下可
 app.use(express.static("front-end"));
 
 app.use(bodyParser.json()); // for parsing application/json
-app.use('/', function(req, res, next){
-    var sess = req.session;
-    var username = sess.username;
-    console.log('session username1111', username)
-    next()
-  });
+// app.use('/', function(req, res, next){
+//     var sess = req.session;
+//     var username = sess.username;
+//     if(!username) {
+//         res.status(401).end()
+//     } else {
+//         next()
+//     }
+//   });
 app.use("/", router);
 app.use("/api/uploads", require("./routers/upload_parts"));
 app.use("/api/spots", require("./routers/spots"));

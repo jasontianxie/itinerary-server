@@ -3,12 +3,14 @@ const router = express.Router();
 const multer  = require("multer");
 const path = require("path");
 const fs = require("fs");
+const needLogin = require("./needLogin");
 const rimraf = require("../utils/removeDir");
 const {insertMedia,} = require("../models/uploadMedias");
 const {findSpots,} = require("../models/spots");
 const upload = multer({ dest: "uploads/multer/",});
 
 router.post("/parts", upload.single("file"),  (req, res) => {
+    if(needLogin(req, res)) return;
     // 接受图片唯一标识符号
     let fileId = req.body.fileId;
     // 接受切片索引
@@ -58,6 +60,7 @@ router.post("/parts", upload.single("file"),  (req, res) => {
 });
 
 router.post("/merge",  (req, res) => {
+    if(needLogin(req, res)) return;
     let {fileId, fileName, spotId = null,} = req.body;
     let fileSplit = fileName.split(".");
     let fileExt = fileSplit[fileSplit.length - 1];
