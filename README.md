@@ -1,4 +1,6 @@
 # itinerary-server
+
+对应的前端代码为：https://github.com/jasontianxie-organization/create-react-app-typescript-itinerary
 itinerary-server
 
 
