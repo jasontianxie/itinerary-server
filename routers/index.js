@@ -1,5 +1,6 @@
 const express = require("express");
 const router = express.Router();
+const needLogin = require("./needLogin");
 const {createSpot, findSpots,} = require("../models/spots");
 const {createRoute, queryRoute,} = require("../models/routes");
 const {createNewRecord, createNewRouteTable,} = require("../models/routeDetail");
@@ -18,6 +19,7 @@ router.get("/api/mainPageSlideData",(req,res) => {
 
 
 router.post('/newRouteForm', (req, res) => {
+    if(needLogin(req, res)) return;
     const reqBody = req.body;
     let promises = [];
     if (reqBody.startSpotId === "") {//更新数据点
@@ -105,6 +107,7 @@ router.post('/newRouteForm', (req, res) => {
 });
 
 router.post('/spots', (req, res) => {
+    if(needLogin(req, res)) return;
     let queryArr = req.body.value,
         queryObj = {};
 
@@ -124,6 +127,7 @@ router.post('/spots', (req, res) => {
 });
 
 router.post('/itineraries', (req, res) => {
+    if(needLogin(req, res)) return;
     let reqBody = req.body,
     contentHtml = reqBody.contentHtml;
 
