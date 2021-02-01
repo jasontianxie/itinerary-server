@@ -17,5 +17,28 @@ function queryUsers(name, pass) {
         },
     });
 }
+function queryEmail(email) {
+    return User.findAll({
+        where: {
+            email
+        },
+    });
+}
 
-module.exports = {queryUsers,};
+function queryUsername(username) {
+    return User.findAll({
+        where: {
+            name: username
+        },
+    });
+}
+
+function createUser(email, name, pass) {
+    return User.create({
+        email,
+        name,
+        pass
+    });
+}
+
+module.exports = {queryUsers, queryEmail, queryUsername, createUser,};
