@@ -30,16 +30,20 @@ router.get("/logout",(req,res) => {
 router.post("/login",(req,res) => {
     // needLogin(req, res);
     queryUsers(req.body.username, req.body.password).then((results) =>{
-        
-        req.session.regenerate(function(err) {
+        if (results && results.length) {
+          req.session.regenerate(function(err) {
             if(err){
-              return res.json({ret_code: 2, ret_msg: '登录失败'});        
+              res.send({code: 1, data: '登录失败'});        
             }
              
             req.session.username = results[0].name;
             req.session.password = results[0].pass;
-            res.send(results[0]);              
+            res.send({code: 0, data: results[0]});              
           });
+        } else {
+          res.send({code: 1, data: '登录失败'});
+        }
+        
     },(errors) =>{
         console.log(errors);
         res.end();
@@ -55,8 +59,8 @@ router.post("/signup",(req,res) => {
         message: '该email已经注册过'
       })
     } else {
-      queryUsername(req.body.nickname).then((res) => {
-        if(res.length) {
+      queryUsername(req.body.nickname).then((re) => {
+        if(re.length) {
           res.send({
             code: 1,
             message: '该用户名已经被使用过，请换一个名字'
