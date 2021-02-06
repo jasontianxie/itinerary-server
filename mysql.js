@@ -61,7 +61,7 @@ app.use(bodyParser.json()); // for parsing application/json
 //     }
 //   });
 app.use("/", router);
-app.use("/api/uploads", require("./routers/upload_parts"));
+// app.use("/api/uploads", require("./routers/upload_parts")); //上传文件，单独放到一个服务器中itinerary-media-server了，2021-02-05
 app.use("/api/spots", require("./routers/spots"));
 app.use("/api/users", require("./routers/users"));
 app.use("/api/itineraries", require("./routers/itineraries"));
