@@ -22,29 +22,28 @@ const Spots = instanse.sequelize.define("spots", {
 });
 
 function createSpot(data) {
-    if(!data.itineraryId) { // 如果没有游记id，说明是新增的游记，需要先创建id
-        return createItinerary(0).then((result) => {
-            return Spots.create({
-                itineraryId: result.itineraryId,
-                spotOrder: data.spotOrder || 0,
-                description: data.description || "",
-                level1: data.level1 || "",
-                level2: data.level2 || "",
-                level3: data.level3 || "",
-                level4: data.level4 || "",
-                level5: data.level5 || "",
-                spotName: data.spotName || "",
-                spotNameCN: data.spotNameCN || "",
-                spotNamePY: data.spotNamePY || "",
-                longitude: data.longitude || "",
-                latitude: data.latitude || "",
-                time: data.time || 0,
-            });
-        });
-    }
     return Spots.create({
         itineraryId: data.itineraryId,
-        spotOrder: data.spotOrder || 0,
+        spotOrder: data.spotOrder,
+        description: "",
+        level1: "",
+        level2: "",
+        level3: "",
+        level4: "",
+        level5: "",
+        spotName: "",
+        spotNameCN: "",
+        spotNamePY: "",
+        longitude: "",
+        latitude: "",
+        time: 0,
+    });
+}
+
+function updateSpot(data) {
+    return Spots.update({
+        itineraryId: data.itineraryId,
+        spotOrder: data.spotOrder,
         description: data.description || "",
         level1: data.level1 || "",
         level2: data.level2 || "",
@@ -57,6 +56,10 @@ function createSpot(data) {
         longitude: data.longitude || "",
         latitude: data.latitude || "",
         time: data.time || 0,
+    }, {
+        where: {
+            spotId: data.spotId,
+        }
     });
 }
 
@@ -70,4 +73,4 @@ function findSpots(reqValue) { // reqVale为一个对象
     return Spots.findAll({where:reqValue,include:[{model:Itineraries, attributes:["title"]}]});
 }
 
-module.exports = {createSpot, findSpots,};
+module.exports = {createSpot, findSpots, updateSpot,};

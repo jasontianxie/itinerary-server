@@ -11,8 +11,8 @@ const Itineraries = instanse.sequelize.define("itineraries", {
 
 function createItinerary(data) {
     return Itineraries.create({
-        draft: data.draft,
-        title: data.title,
+        draft: 0,
+        title: '',
         userId: data.userId
     });
 }
