@@ -13,9 +13,10 @@ router.get("/list",(req,res) => { //根据user id查找所有的游记
     });
 });
 
-router.get("/create",(req,res) => {
+router.post("/create",(req,res) => {
     if(needLogin(req, res)) return;
-    createItinerary({userId: req.query.userid,}).then((results) =>{
+    const data = req.body;
+    createItinerary({userId: data.userId,}).then((results) =>{
         res.send({code: 0, message: '创建成功', data: results});
     }).catch(() => {
         res.send({code: 1, message: '创建失败', data: ''});
