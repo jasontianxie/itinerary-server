@@ -2,7 +2,7 @@ const instanse = require("./index");
 const { createItinerary, Itineraries, } = require("./itineraries");
 
 const Spots = instanse.sequelize.define("spots", {
-    spotId: { type: instanse.Sequelize.INTEGER, primaryKey: true, autoIncrement: true },
+    spotId: { type: instanse.Sequelize.INTEGER, primaryKey: true, autoIncrement: true, },
     spotOrder: instanse.Sequelize.INTEGER,
     description: instanse.Sequelize.TEXT,
     itineraryId: instanse.Sequelize.INTEGER,
@@ -59,18 +59,22 @@ function updateSpot(data) {
     }, {
         where: {
             spotId: data.spotId,
-        }
+        },
     });
+}
+
+function getSpotInfo(reqValue) { // reqVale为一个对象
+    return Spots.findAll({where:reqValue,});
 }
 
 function findSpots(reqValue) { // reqVale为一个对象
     Itineraries.hasMany(Spots, {
-        foreignKey: 'itineraryId'
-      })
+        foreignKey: "itineraryId",
+    });
     Spots.belongsTo(Itineraries, {
-        foreignKey: 'itineraryId'
-      })
-    return Spots.findAll({where:reqValue,include:[{model:Itineraries, attributes:["title"]}]});
+        foreignKey: "itineraryId",
+    });
+    return Spots.findAll({where:reqValue,include:[{model:Itineraries, attributes:["title",],},],});
 }
 
-module.exports = {createSpot, findSpots, updateSpot,};
+module.exports = {createSpot, findSpots, updateSpot, getSpotInfo,};

@@ -1,15 +1,24 @@
 const express = require("express");
 const router = express.Router();
 const needLogin = require("./needLogin");
-const {createSpot, findSpots, updateSpot} = require("../models/spots");
+const {createSpot, findSpots, updateSpot, getSpotInfo,} = require("../models/spots");
 
 router.post("/update", (req, res) => { //更新spot信息
     if(needLogin(req, res)) return;
     const data = req.body;
-    updateSpot(data).then((result) => {
-        res.send({code: 0, message: "写入地点信息成功", data: null});
+    updateSpot(data).then(() => {
+        res.send({code: 0, message: "写入地点信息成功", data: null,});
     }).catch(() => {
-        res.send({code:1, message: "写入地点信息失败", data: null});
+        res.send({code:1, message: "写入地点信息失败", data: null,});
+    });
+});
+
+router.get("/info", (req, res) => { //查询spot信息
+    if(needLogin(req, res)) return;
+    getSpotInfo({spotId: parseInt(req.query.spotId, 10),}).then((res) => {
+        res.send({code: 0, message: "获取地点信息成功", data: res[0],});
+    }).catch(() => {
+        res.send({code:1, message: "获取地点信息失败", data: null,});
     });
 });
 
@@ -32,7 +41,7 @@ router.post("/create", (req, res) => { //创建一个新的spot
         latitude: "",
         time: 0,
     }).then((result) => {
-        res.send({code: 0, message: "创建地点成功", data: result});
+        res.send({code: 0, message: "创建地点成功", data: result,});
     }).catch(() => {
         res.send({code:1, message: "创建地点失败", data: null,});
     });
@@ -40,8 +49,8 @@ router.post("/create", (req, res) => { //创建一个新的spot
 
 router.get("/list",(req, res) => {
     if(needLogin(req, res)) return;
-    findSpots({itineraryId: req.query.itineraryId}).then((result) => {
-        res.send(result)
-    })
-})
+    findSpots({itineraryId: req.query.itineraryId,}).then((result) => {
+        res.send(result);
+    });
+});
 module.exports = router;
